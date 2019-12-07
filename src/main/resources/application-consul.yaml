@@ -3,7 +3,7 @@ spring:
     name: emptyframe
   cloud:
     consul:
-      host: 127.0.0.1
+      host: 148.70.10.253
       port: 8500
       #是否启用consul
       enabled: true
