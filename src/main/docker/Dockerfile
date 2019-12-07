@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejdk8:slim
+FROM kdvolder/jdk8
 VOLUME /tmp
 ADD emptyframe.jar emptyframe.jar
 RUN sh -c 'touch /emptyframe.jar'
