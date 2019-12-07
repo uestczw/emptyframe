@@ -1,0 +1,53 @@
+.selectRegist-btn_container
+{
+    width: 760px;
+	height:55%;
+    margin-left: 358px;
+	margin-top:25%;
+}
+.selectRegist-btn
+{
+    position: relative;
+    display: block;
+    width: 300px;
+    height: 110px;
+    background-color: #64b5e3;
+    border-radius: 55px;
+    text-align: center;
+    line-height: 110px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 48px;
+    float: left;
+    margin-left: 160px;
+    cursor: pointer;
+    box-shadow: 6px 6px 14px rgba(0,0,0,.2);
+}
+.selectRegist-btn::after
+{
+    content: " ";
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    box-sizing: border-box;
+}
+
+.selectRegist-btn:first-child
+{
+    margin-left: 0;
+}
+.selectRegist-btn:hover
+{
+    background-color: #4ca0cc;
+}
+.selectRegist-btn:active
+{
+    background-color: #4ca0cc;
+    box-shadow: 0px 0px 0px rgba(0,0,0,.2);
+}

@@ -1,0 +1,223 @@
+body
+{
+    background-color: #323232;
+}
+@media (max-width: 1500px) {
+    body
+    {
+        zoom: 0.7;
+    }
+}
+
+@media (max-width: 1000px) {
+    body
+    {
+        zoom: 0.5;
+    }
+}
+.page_container
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 84px 0 86px 0;
+}
+/*登陆注册公共头部*/
+.l-r-hd_container
+{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    width: 70%;
+    padding: 15px 0;
+    background-color:rgba(50,50,50,.8);
+	margin-left:15%;
+}
+.l-r-hd_warp
+{
+    width: 100%;
+    margin: 0 auto;
+    height: 54px;
+}
+.l-r-logo_img
+{
+    display: block;
+    width: 172px;
+    height: 54px;
+    float: left;
+}
+.l-r-gobackIndex_a
+{
+    display: block;
+    float: left;
+    margin: 12px 0 12px 115px;
+    line-height: 34px;
+    color: #42b4f5;
+    font-size: 18px;
+    text-decoration: none;
+}
+.l-r-warp_container
+{
+    position: absolute;
+    top: 25%;
+    left: 16%;
+    
+    width: 68%;
+    padding-left: 300px;
+    background-color: #FFFFFF;
+    margin: 0 auto;
+	height:55%;
+}
+.left-poster_box
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background: url("../../imgs/login_left_bg_img.jpg") no-repeat;
+	background-size: 100% 100%;
+}
+.left-poster_content
+{
+    position: absolute;
+    left: 0;
+    top: 15%;
+    width: 100%;
+    
+    text-align: center;
+}
+
+.right-content_container
+{
+    padding-left: 8%;
+	padding-top:3%;
+}
+.right-content_title
+{
+    font-size: 24px;
+    color: #323232;
+    font-weight: normal;
+}
+.right-content_title small
+{
+    font-size: 24px;
+}
+.login-form_contianer
+{
+    margin-top: 20px;
+    width: 100%;
+}
+.login-input_box
+{
+    position: relative;
+    width: 100%;
+    height: 35px;
+}
+.login-input_control
+{
+    width: 90%;
+    height: 34px;
+    outline:none;
+    border: none;
+    color: #323232;
+    border-bottom: 1px solid #b6b6b6;
+    font-size: 16px;
+}
+.login-input_control:focus
+{
+    border-bottom: 2px solid #64b5e3;
+}
+.login-input_control::-webkit-input-placeholder
+{
+    font-size: 18px;
+    color: #b6b6b6;
+}
+.remark-p
+{
+    position: absolute;
+    left: 0;
+    bottom: -30px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #b6b6b6;
+}
+.login-apply_btn
+{
+    position: relative;
+    display: inline-block;
+    width: 142px;
+    height: 62px;
+    text-align: center;
+    line-height: 62px;
+    font-size: 24px;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+    border-radius: 100px;
+    background-color: #64b5e3;
+    cursor: pointer;
+    box-shadow: 6px 6px 14px rgba(0,0,0,.2);
+}
+.login-apply_btn::before
+{
+    content: '';
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    box-sizing: border-box;
+}
+
+
+.login-apply_btn:hover
+{
+    background-color: #4ca0cc;
+}
+.login-apply_btn:active
+{
+    background-color: #4ca0cc;
+    box-shadow: 0px 0px 0px rgba(0,0,0,.2);
+}
+.footer_container
+{
+    position: fixed;
+    bottom: 0;
+    left:0;
+    width: 100%;
+    background-color:rgba(50,50,50,.8);
+    padding-bottom: 20px;
+}
+.bule-line
+{
+    width: 200px;
+    height: 6px;
+    background-color: #64b5e3;
+    margin: 0px auto 0;
+}
+.footer-item
+{
+    text-align: center;
+    margin-top: 20px;
+}
+.copyright_box
+{
+    font-size: 12px;
+    color: #cecece;
+    font-family: 宋体;
+}
+.recordcode_box
+{
+    font-size: 12px;
+    color: #64b5e3;
+    padding-left: 48px;
+    font-family: 宋体;
+}

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+	<springProperty scope="context" name="logLevel" source="logging.level" />
+    <springProperty scope="context" name="logPath" source="logging.path" />
+    <springProperty scope="context" name="logFile" source="logging.file" />
+
+	<!-- 输出格式 -->
+	<property name="out.pattern" value="%d{HH:mm:ss.SSS} [%-5p][%t][%logger{24}][%L] - %m%n" />
+	<!-- 活动文件的大小 -->
+	<property name="max.file.size" value="500MB" />
+	<!-- 保留的归档文件的最大数量 -->
+	<property name="max.history" value="30" />
+	<!-- 控制所有归档日志文件的总大小 -->
+	<property name="total.size.cap" value="30GB" />
+
+	<!-- 控制台 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${out.pattern}</pattern>
+		</encoder>
+	</appender>
+
+	<!-- DEBUG日志 -->
+	<appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logPath}/debug.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${logPath}/debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>${max.file.size}</maxFileSize>
+			<maxHistory>${max.history}</maxHistory>
+			<totalSizeCap>${total.size.cap}</totalSizeCap>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${out.pattern}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!-- INFO日志 -->
+	<appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logPath}/info.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${logPath}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>${max.file.size}</maxFileSize>
+			<maxHistory>${max.history}</maxHistory>
+			<totalSizeCap>${total.size.cap}</totalSizeCap>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${out.pattern}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!-- ERROR日志 -->
+	<appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logPath}/error.log</file>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${logPath}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>${max.file.size}</maxFileSize>
+			<maxHistory>${max.history}</maxHistory>
+			<totalSizeCap>${total.size.cap}</totalSizeCap>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${out.pattern}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!-- logger命中中包含Mapper的单独输出到一个文件 -->
+	<appender name="SQL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logPath}/sql.log</file>
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator class="ch.qos.logback.classic.boolex.JaninoEventEvaluator">
+				<expression>logger.contains("Mapper")</expression>
+			</evaluator>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logPath}/sql.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>${max.history}</maxHistory>
+			<totalSizeCap>${total.size.cap}</totalSizeCap>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${out.pattern}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="OTHER_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logFile}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logFile}.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>${max.history}</maxHistory>
+			<totalSizeCap>${total.size.cap}</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${out.pattern}</pattern>
+		</encoder>
+	</appender>
+
+	<!-- com.ourhours.coupon.service包下的日志都输出到单独一个文件 -->
+	<!-- <logger name="com.ourhours.coupon.service" level="INFO"> -->
+	<!-- <appender-ref ref="OTHER_FILE" /> -->
+	<!-- </logger> -->
+
+	<logger name="org.springframework" level="info"></logger>
+
+	<root level="${logLevel}">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="DEBUG_FILE" />
+		<appender-ref ref="INFO_FILE" />
+		<appender-ref ref="ERROR_FILE" />
+        <appender-ref ref="SQL_FILE" />
+        <appender-ref ref="OTHER_FILE" />
+	</root>
+
+</configuration>

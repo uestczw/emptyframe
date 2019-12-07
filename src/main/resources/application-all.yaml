@@ -1,0 +1,52 @@
+spring: 
+  thymeleaf: 
+    mode: LEGACYHTML5
+    check-template-location: true
+    prefix: classpath:/pages/
+    suffix: .html
+    viewNames: ["*.html"]
+  jmx: 
+    enabled: false
+  mvc: 
+    static-path-pattern: [/static/**,index.html]
+    view: 
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+      viewNames: ["*.jsp"]
+  resources: 
+    static-locations: [/,/static/]
+  #数据源配置
+  datasource: 
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    #max-idle: 10
+    #max-wait: 10000
+    #min-idle: 5
+    #initial-size: 5
+    hikari: 
+      #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒以上
+      #jdbc-url: jdbc:mysql://127.0.0.1:3306/save?useUnicode=true&characterEncoding=utf-8
+      #username: root
+      #password: 111111
+      read-only: false
+      #等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
+      connection-timeout: 30000
+      #一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟
+      idle-timeout: 600000
+      #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒
+      max-lifetime: 1800000
+      #连接池中允许的最大连接数。缺省值：10,推荐的公式：((core_count * 2) + effective_spindle_count)
+      connection-test-query: SELECT 1
+mapper.help: true  
+project: 
+  path: 
+    linux: /var/data/logisdata/road-parking/manager/
+    win: C:/logisdata/road-parking/manager/
+    
+parking: 
+  payment: 
+    statement-file: /statement-log
+      
+mybatis:
+  config: classpath:mybatis-config.xml
+server.port: 8080

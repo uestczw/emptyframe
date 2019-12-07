@@ -1,0 +1,85 @@
+.update_btn {
+    font-size: 18px;
+    color: #33a4e6;
+}
+
+.t-info_container {
+    background-color: #1d8ed0;
+}
+
+.t-info_dl {
+    line-height: 30px;
+}
+
+.t-info_dl dd {
+    width: 275px;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.t-info_title,
+.gray-text_span {
+    color: #a3d6f4;
+}
+
+.aptitudes-auth_btn {
+    display: block;
+    float: left;
+    width: 80px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    background-color: #fff;
+    color: #000000;
+    border-radius: 6px;
+    -webkit-box-shadow: 2px 2px 6px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 2px 2px 6px rgba(0, 0, 0, .3);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, .3);
+}
+
+.certificate_container {
+    height: 518px;
+    background-color: #ececec;
+    margin-top: 10px;
+}
+
+.certificate_box {
+    float: left;
+    position: relative;
+    padding: 40px 20px 20px;
+}
+
+.certificate-box_title {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    height: 20px;
+    white-space: nowrap;
+    font-size: 18px;
+    color: #101010;
+    font-weight: normal;
+}
+
+.idCard-Img_card {
+    position: relative;
+    width: 320px;
+    height: 200px;
+    background-color: #a1a1a1;
+    border-radius: 6px;
+    margin-top: 20px;
+    background-size: cover;
+}
+
+.business-license_card {
+    width: 279px;
+    height: 420px;
+    background-color: #a1a1a1;
+    margin-top: 20px;
+}
+
+.QR-code_card {
+    width: 174px;
+    height: 174px;
+    margin-top: 20px;
+    background-color: #a1a1a1;
+}

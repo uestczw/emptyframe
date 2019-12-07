@@ -1,0 +1,196 @@
+.regist-type_h2
+{
+    margin-top: 0px;
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: normal;
+}
+.left-poster_p
+{
+    position: relative;
+    margin: 20px 20px 0;
+    padding: 0 26px;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+	width:92%;
+}
+.left-poster_p::before
+{
+    position: absolute;
+    left: 0;
+    top: 4px;
+    display: block;
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.reg-right-content_title
+{
+    font-size: 24px;
+    color: #323232;
+    font-weight: normal;
+}
+.reg-right-content_title small
+{
+    font-size: 20px;
+}
+.regist-step_container
+{
+    margin-top: 20px;
+    height: 24px;
+}
+.regist-step_a
+{
+    position: relative;
+    display: block;
+    float: left;
+    font-size: 18px;
+    color: #9f9f9f;
+    text-decoration: none;
+    margin-right: 30px;
+    padding-right: 40px;
+    line-height: 24px;
+}
+.arrow_step::after
+{
+    position: absolute;
+    right: 0;
+    top: 3px;
+    display: block;
+    content: '';
+    width: 10px;
+    height: 18px;
+    background-image: url("../imgs/regist_arrow_right.png");
+}
+.current_step
+{
+    color: #33a4e6;
+}
+.mobile-capital_label
+{
+    height: 38px;
+    line-height: 38px;
+    font-size: 14px;
+    color: #323232;
+}
+.mobile-capital_input
+{
+    width: 252px;
+    height: 38px;
+    border: 1px solid #7a7a7a;
+    margin-left: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.mobile-capital_btn
+{
+    margin-left: 21px;
+    color: #33a4e6;
+    line-height: 38px;
+}
+.regist-success_msg
+{
+    position: relative;
+    display: block;
+    float: left;
+    height: 60px;
+    font-size: 45px;
+    color: #323232;
+    font-weight: bold;
+    line-height: 60px;
+}
+.regist-success_msg::after
+{
+    position: absolute;
+    right: -88px;
+    top: 6px;
+    display: block;
+    content: '';
+    width: 68px;
+    height: 48px;
+    background-image: url("../imgs/regist_success_icon.png");
+
+}
+.h-login_btn
+{
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    width: 110px;
+    float: right;
+    margin-top: 3px;
+}
+.login-dialog_content
+{
+    display: none;
+    width: 330px;
+    height: 300px;
+    background-color: #ffffff;
+    position: absolute;
+    z-index: 9999999;
+    right: 0;
+    top: 75px;
+    -webkit-box-shadow:  8px 8px 20px rgba(0,0,0,.2);
+    -moz-box-shadow:  8px 8px 20px rgba(0,0,0,.2);
+    box-shadow:  8px 8px 20px rgba(0,0,0,.2);
+}
+
+.login-dialog_content::before
+{
+    position: absolute;
+    top: -18px;
+    right: 44px;
+    display: block;
+    content: '';
+    border-style: solid;
+    border-width: 9px;
+    border-color: rgba(255,255,255,0) rgba(255,255,255,0) rgba(255,255,255,1) rgba(255,255,255,0);
+}
+.login-dialog_items
+{
+    margin-left: 25px;
+    margin-right: 25px;
+}
+.forget-pass_container
+{
+    text-align: right;
+    margin: 20px 25px 0 25px;
+    height: 15px;
+    line-height: 15px;
+}
+.forget-pass_container a
+{
+    font-size: 14px;
+    line-height: 15px;
+    color: #323232;
+    font-family: 宋体;
+}
+.login-apply_btn,
+.login-cancel_btn
+{
+    width: 130px;
+    /** 
+    	height: 46px;
+    	line-height: 46px;
+    */
+}
+.login-cancel_btn
+{
+    margin-left: 20px;
+    background-color: #d2d6d9;
+}
+.login-cancel_btn:hover,
+.login-cancel_btn:active
+{
+    background-color: #bbbfc2;
+}

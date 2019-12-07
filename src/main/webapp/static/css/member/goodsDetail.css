@@ -1,0 +1,60 @@
+.form_container
+{
+    margin-top: 28px;
+}
+.form_row
+{
+    margin-bottom: 30px;
+}
+.form-items-title_label
+{
+    display: block;
+    font-size: 20px;
+    height: 38px;
+    width: 90px;
+    line-height: 38px;
+    color: #5d5d5d;
+}
+.form-item_contorl
+{
+    height: 36px;
+    padding: 0 5px !important;
+    border: 1px solid #767676 !important;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.form-items-endon_span
+{
+    display: block;
+    font-size: 20px;
+    height: 38px;
+    padding-left: 10px;
+    line-height: 38px;
+    color: #5d5d5d;
+}
+.remark_textarea
+{
+    width: 774px;
+    max-width: 774px;
+    min-width: 774px;
+    height: 112px;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.form_btn
+{
+    float: left;
+    display: block;
+    height: 40px;
+    width: 100px;
+    text-align: center;
+    line-height: 40px;
+    background-color: #33a5e6;
+    color: #ffffff;
+    border:none;
+    font-size: 24px;
+    border-radius: 4px;
+}

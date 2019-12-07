@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urls xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="param-rule.xsd">
+	<!-- 通用正则配置 -->
+	<regex id="reg_ip">
+		<reg>^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$</reg>
+		<errMsg>请输入正确的IP地址</errMsg>
+		<desc>IP验证</desc>
+	</regex>
+	<regex id="reg_mac">
+		<reg>^(?!.*[ \:\-]{2,}.*$)(([a-fA-F0-9]{2}([a-fA-F0-9]{2}){5})||([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5})||([a-fA-F0-9]{2}( [a-fA-F0-9]{2}){5})||([a-fA-F0-9]{2}(-[a-fA-F0-9]{2}){5}))$</reg>
+		<errMsg>请输入正确的MAC地址</errMsg>
+		<desc>mac地址验证</desc>
+	</regex>
+	<regex id="reg_positive_integer">
+		<reg>^[1-9]+[0-9]{0,8}$</reg>
+		<errMsg>非法参数</errMsg>
+		<desc>正整数验证</desc>
+	</regex>
+	<regex id="reg_integer">
+		<reg>^[0-9]{0,8}$</reg>
+		<errMsg>非法参数</errMsg>
+		<desc>正整数验证</desc>
+	</regex>
+	<regex id="reg_soft_port">
+		<reg>^(([1-9]\d{0,3})|([1-5]\d{4})|(6[0-4]\d{3})|(65[0-4]\d{2})|(655[0-2]\d)|(6553[0-5]))$</reg>
+		<errMsg>端口号应在1-65535之间</errMsg>
+		<desc>软端口号验证</desc>
+	</regex>
+	<regex id="reg_physical_interface">
+		<reg>^[\w]{0,10}$</reg>
+		<errMsg>请输入正确的物理端口号</errMsg>
+		<desc>物理端口验证</desc>
+	</regex>
+
+	<!-- 通用分页查询 -->
+	<url isreg="true" name="reg_all_ajax_page">
+		<address><![CDATA[^/([\w\-\_]+/)+list(\.json)?$]]></address>
+		<desc>通用分页查询页数和行数验证</desc>
+		<author>张伟</author>
+		<params>
+			<param>
+				<name>page</name>
+				<required>false</required>
+				<requiredMsg></requiredMsg>
+				<rule ref="reg_positive_integer" />
+				<errMsg>当前页数输入错误</errMsg>
+				<desc>查询页数</desc>
+			</param>
+			<param>
+				<name>rows</name>
+				<required>false</required>
+				<requiredMsg></requiredMsg>
+				<rule ref="reg_positive_integer" />
+				<errMsg>查询行数输入错误</errMsg>
+				<desc>查询行数</desc>
+			</param>
+			<param>
+				<name>keywords</name>
+				<required>false</required>
+				<requiredMsg></requiredMsg>
+				<rule>^.*$</rule>
+				<errMsg>关键词错误</errMsg>
+				<desc>关键词</desc>
+			</param>
+			<param>
+				<name>status</name>
+				<required>false</required>
+				<requiredMsg></requiredMsg>
+				<rule>^.*$</rule>
+				<errMsg>状态错误</errMsg>
+				<desc>状态错误</desc>
+			</param>
+		</params>
+	</url>
+
+	<!-- 通用接口,此处是为了能够接受参数 -->
+	<url isreg="true" name="reg_all_api">
+		<address><![CDATA[^/api/.*\.(json|do)$]]></address>
+		<desc>通用分页查询页数和行数验证</desc>
+		<author>张伟</author>
+		<params>
+			<param>
+				<name>data</name>
+				<required>false</required>
+				<requiredMsg></requiredMsg>
+				<rule></rule>
+				<errMsg>当前页数输入错误</errMsg>
+				<desc>查询页数</desc>
+			</param>
+			<param>
+				<name>sign</name>
+				<required>false</required>
+				<requiredMsg></requiredMsg>
+				<rule></rule>
+				<errMsg>查询行数输入错误</errMsg>
+				<desc>查询行数</desc>
+			</param>
+		</params>
+	</url>
+
+	<url isreg='true'>
+		<address><![CDATA[^(/upImg|/(admin|app|staff)/loadImg|/(admin|app|staff)/image|/(admin|app|staff)/load_img)\.(json|do)$]]></address>
+		<desc>图片上传下载</desc>
+		<author>张伟</author>
+		<params>
+			<param>
+				<name>file</name>
+				<required>false</required>
+				<requiredMsg></requiredMsg>
+				<rule></rule>
+				<errMsg></errMsg>
+				<desc>上传文件</desc>
+			</param>
+			<param>
+				<name>path</name>
+				<required>false</required>
+				<requiredMsg></requiredMsg>
+				<rule></rule>
+				<errMsg></errMsg>
+				<desc>加载图片路径</desc>
+			</param>
+		</params>
+	</url>
+	<url name="error">
+		<address>/error.do</address>
+		<desc>http请求统一错误封装</desc>
+		<author>张伟</author>
+		<params>
+			<param>
+				<name>msg</name>
+				<required>false</required>
+				<requiredMsg></requiredMsg>
+				<rule></rule>
+				<errMsg></errMsg>
+				<desc>错误提示信息</desc>
+			</param>
+		</params>
+	</url>
+</urls>
+	
