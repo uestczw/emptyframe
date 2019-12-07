@@ -23,6 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+		<docker.image.prefix>framedocker</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -339,6 +340,29 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<mainClass>com.yianit.Application</mainClass>
+				</configuration>
+			</plugin>
+			<!-- docker插件
+			需要在maven的setting文件加入<pluginGroup>com.spotify</pluginGroup> 配置
+			 -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<imageTags>
+						<imageTag>${project.version}</imageTag>
+						<imageTag>latest</imageTag>
+					</imageTags>
+					<dockerDirectory>src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
 				</configuration>
 			</plugin>
 		</plugins>
