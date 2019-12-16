@@ -9,7 +9,12 @@
 <script src="static/api/jQuery/jquery.js"></script>
 </head>
 <body>
-    用户管理页面<span th:text="${aaaa}"></span>
+    <form id="Myform" name="Myform" action="/admin/active/add.do"
+			method="POST" enctype="multipart/form-data">
+			<input type="text" class="form-control" id="port" name="port" placeholder="端口" value="">
+			<input type="file" id="wj" name="wj" class="form-control">
+			<button type="submit" class="btn btn-info">提交保存</button>
+	</form>
 </body>
 </html>
 <script>

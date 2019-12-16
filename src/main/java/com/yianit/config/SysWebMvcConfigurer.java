@@ -22,6 +22,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -34,8 +35,8 @@ import com.yianit.intercept.AdminAccessIntercept;
  * @author HL.King
  */
 // @EnableWebMvc
-@Configuration
-@AutoConfigureAfter
+//@Configuration
+//@AutoConfigureAfter
 public class SysWebMvcConfigurer implements WebMvcConfigurer {
 	@Autowired
 	@Qualifier("adminAccessIntercept")
@@ -99,8 +100,8 @@ public class SysWebMvcConfigurer implements WebMvcConfigurer {
 //		return registration;
 //	}
 
-	@Bean
-	@Primary
+	//@Bean
+	//@Primary
 	public ContentNegotiationManagerFactoryBean contentNegotiationManagerFactoryBean() {
 		ContentNegotiationManagerFactoryBean cnManage = new ContentNegotiationManagerFactoryBean();
 		// 1、开启默认匹配,如果所有的mediaType都没匹配上，就会使用defaultContentType
@@ -130,4 +131,9 @@ public class SysWebMvcConfigurer implements WebMvcConfigurer {
 		pro.put("action", MediaType.APPLICATION_XML_VALUE);
 		return pro;
 	}
+//	@Override
+//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        //registry.addResourceHandler("/static/**").addResourceLocations("file:d:/tt/static/");
+//        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/");
+//    }
 }

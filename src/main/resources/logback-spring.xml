@@ -17,6 +17,7 @@
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>${out.pattern}</pattern>
+			<charset>UTF-8</charset>
 		</encoder>
 	</appender>
 

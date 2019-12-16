@@ -7,14 +7,6 @@ spring:
     viewNames: ["*.html"]
   jmx: 
     enabled: false
-  mvc: 
-    static-path-pattern: [/static/**,index.html]
-    view: 
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
-      viewNames: ["*.jsp"]
-  resources: 
-    static-locations: [/,/static/]
   #数据源配置
   datasource: 
     driver-class-name: com.mysql.jdbc.Driver
@@ -49,4 +41,4 @@ parking:
       
 mybatis:
   config: classpath:mybatis-config.xml
-server.port: 8080
+server.port: 8083

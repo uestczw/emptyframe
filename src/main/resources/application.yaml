@@ -3,4 +3,4 @@ spring:
     cache: false
   profiles: 
     active: local
-    include: all,redis,consul
+    include: all,redis,consul,rabbitmq,netty

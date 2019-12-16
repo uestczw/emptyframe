@@ -1,5 +1,7 @@
 package com.yianit.config;
 
+import org.springframework.cloud.commons.util.InetUtils;
+import org.springframework.cloud.commons.util.InetUtilsProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,5 +19,9 @@ public class ApplicationConfig {
 		MapperScannerConfigurer config = new MapperScannerConfigurer();
 		config.setBasePackage("com.yianit.*.mapper.**..;hl.king.mybatis.spring.common.mapper.**..");
 		return config;
+	}
+	@Bean
+	public InetUtils inetUtils(InetUtilsProperties inetUtilsProperties){
+	    return new InetUtils(inetUtilsProperties);
 	}
 }

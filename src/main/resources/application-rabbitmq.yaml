@@ -1,0 +1,13 @@
+spring:
+  rabbitmq:
+    host: 192.168.3.200
+    port: 5672
+    username: admin
+    password: admin
+    #虚拟host 可以不设置,使用server默认host
+    #virtual-host: JCcccHost
+    #消息确认配置项
+    #确认消息已发送到交换机(Exchange)
+    publisher-confirms: true
+    #确认消息已发送到队列(Queue)
+    publisher-returns: true

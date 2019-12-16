@@ -1,0 +1,4 @@
+netty:
+  server:
+    boss: 2
+    worker: 4

@@ -1,9 +1,16 @@
 spring:
   application:
-    name: emptyframe
+    name: emptyframe13
   cloud:
+    #指定ip地址
+    client:
+      ip-address: 192.168.3.4
+    inetutils:
+      #注册到注册中心的ip地址
+      preferred-networks:
+        - ${spring.cloud.client.ip-address}
     consul:
-      host: 148.70.10.253
+      host: 192.168.3.200
       port: 8500
       #是否启用consul
       enabled: true
@@ -15,5 +22,6 @@ spring:
         healthCheckPath: /health
         #监控检查频率
         healthCheckInterval: 15s
-        ip-address: true
-        instance-id: ${spring.application.name}:${spring.cloud.client.ipaddress}:${spring.application.instance_id:${server.port}}
+        #强制注册ip地址到注册中心，否则将注册主机名
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}

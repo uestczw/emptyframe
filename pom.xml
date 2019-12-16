@@ -282,6 +282,16 @@
 			<artifactId>sdk-core-java</artifactId>
 			<version>1.1.0</version>
 		</dependency>
+		<!-- netty依赖 springboot2.0自动导入版本 -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+		</dependency>
+		<!--rabbitmq -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -337,9 +347,8 @@
 					<mainClass>com.yianit.Application</mainClass>
 				</configuration>
 			</plugin>
-			<!-- docker插件
-			需要在maven的setting文件加入<pluginGroup>com.spotify</pluginGroup> 配置
-			 -->
+			<!-- docker插件 需要在maven的setting文件加入<pluginGroup>com.spotify</pluginGroup> 
+				配置 -->
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
