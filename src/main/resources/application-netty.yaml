@@ -2,3 +2,6 @@ netty:
   server:
     boss: 2
     worker: 4
+    core_pool_size: 4
+    maximum_pool_size: 4
+    keep_alive_time: 10
