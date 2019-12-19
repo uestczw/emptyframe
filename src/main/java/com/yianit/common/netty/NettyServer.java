@@ -1,13 +1,10 @@
 package com.yianit.common.netty;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -21,7 +18,6 @@ import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.yianit.common.netty.coder.TestCoder;
 import com.yianit.common.netty.coder.YianCoder;
 import com.yianit.common.util.JedisPoolUtil;
@@ -36,6 +32,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -59,29 +56,32 @@ public class NettyServer {
 	BootNettyChannelInitializer<SocketChannel> bootNettyChannelInitializer;
 	private final Logger LOG = LoggerFactory.getLogger(NettyServer.class);
 	public static Map<Integer, Map<String, ChannelContext>> PORT_CACHE = new ConcurrentHashMap<Integer, Map<String, ChannelContext>>();
+	public static Map<Integer,ChannelFuture> FUTURE_CACHE = new ConcurrentHashMap<Integer, ChannelFuture>();
 	public static Map<Integer, Boolean> STATUS_CACHE = new ConcurrentHashMap<Integer, Boolean>();
 	// public static Map<Integer, YianMsgEncoder> PORT_ENCODER_CACHE = new
 	// ConcurrentHashMap<Integer, YianMsgEncoder>();
 	// public static Map<Integer, YianMsgDecoder> PORT_DECODER_CACHE = new
 	// ConcurrentHashMap<Integer, YianMsgDecoder>();
-	// private EventLoopGroup bossGroup = new NioEventLoopGroup(boss,new
-	// DefaultThreadFactory("server1", true));
-	// private EventLoopGroup workerGroup = new NioEventLoopGroup(worker,new
-	// DefaultThreadFactory("server2", true));
-	private static final int CORE_POOL_SIZE = 4;
-	private static final int MAXIMUM_POOL_SIZE = 4;
-	private static final long KEEP_ALIVE_TIME = 10;
-	public static final BlockingQueue<Runnable> QUEUE = new LinkedBlockingQueue<Runnable>();
-	public static final ThreadPoolExecutor SERVICE = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE,
-			KEEP_ALIVE_TIME, TimeUnit.MINUTES, QUEUE,
-			new ThreadFactoryBuilder().setDaemon(true).setNameFormat("GP-THREAD-POOL-%d").build()) {
-		@Override
-		protected void afterExecute(Runnable r, Throwable t) {
-			super.afterExecute(r, t);
-		}
-	};
-	private EventLoopGroup bossGroup = new NioEventLoopGroup(0);
-	private EventLoopGroup workerGroup = new NioEventLoopGroup(0, SERVICE);
+	private EventLoopGroup bossGroup = new NioEventLoopGroup(boss, new DefaultThreadFactory("server1", true));
+	private EventLoopGroup workerGroup = new NioEventLoopGroup(worker, new DefaultThreadFactory("server2", true));
+	// private static final int CORE_POOL_SIZE = 4;
+	// private static final int MAXIMUM_POOL_SIZE = 4;
+	// private static final long KEEP_ALIVE_TIME = 10;
+	// public static final BlockingQueue<Runnable> QUEUE = new
+	// LinkedBlockingQueue<Runnable>();
+	// public static final ThreadPoolExecutor SERVICE = new
+	// ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE,
+	// KEEP_ALIVE_TIME, TimeUnit.MINUTES, QUEUE,
+	// new
+	// ThreadFactoryBuilder().setDaemon(true).setNameFormat("NETTY-SYS-THREAD-POOL-%d").build())
+	// {
+	// @Override
+	// protected void afterExecute(Runnable r, Throwable t) {
+	// super.afterExecute(r, t);
+	// }
+	// };
+	// private EventLoopGroup bossGroup = new NioEventLoopGroup(0,SERVICE);
+	// private EventLoopGroup workerGroup = new NioEventLoopGroup(0, SERVICE);
 	private ServerBootstrap bootstrap = new ServerBootstrap();
 	private ChannelFuture[] ChannelFutures = null;
 	private int beginPort = 6000;
@@ -222,13 +222,17 @@ public class NettyServer {
 		}
 		if (PORT_CACHE.containsKey(port)) {
 			for (Entry<String, ChannelContext> v : PORT_CACHE.get(port).entrySet()) {
+				DeviceCache.clearDevice(v.getValue().getChannel());
 				v.getValue().getChannel().close();
 			}
+			FUTURE_CACHE.get(port).channel().close();
+			FUTURE_CACHE.remove(port);
 			PORT_CACHE.remove(port);
 			LOG.info("端口" + port + "服务监听关闭成功");
 		} else {
 			LOG.info("端口" + port + "服务监听未找到");
 		}
+		jedisPoolUtil.removeKey("server.lis.port." + springBaseConfig.getIp() + "." + port);
 	}
 
 	public void openServerChannel(int port) {
@@ -243,10 +247,12 @@ public class NettyServer {
 			stopServerChannel(port);
 		}
 		STATUS_CACHE.put(port, true);
+		jedisPoolUtil.incr("server.lis.port." + springBaseConfig.getIp() + "." + port);
 		Map<String, ChannelContext> tmp = new ConcurrentHashMap<String, ChannelContext>();
 		PORT_CACHE.put(port, tmp);
 		LOG.info("开始端口" + port + "服务监听");
 		ChannelFuture channelFuture = bootstrap.bind(port);
+		FUTURE_CACHE.put(port, channelFuture);
 		channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
 			@Override
 			public void operationComplete(Future<? super Void> future) throws Exception {
@@ -280,7 +286,11 @@ public class NettyServer {
 
 	public void initRedisCache() {
 		// String ip = IpUtil.getLocalIp();
-		jedisPoolUtil.set("proxy_" + springBaseConfig.getIp(),
-				"http://" + springBaseConfig.getIp() + ":" + tomcatPort + "/device/send");
+		List<String> keys = jedisPoolUtil.keys("server.lis.port." + springBaseConfig.getIp() + ".*");
+		for (String key : keys) {
+			jedisPoolUtil.removeKey(key);
+		}
+		jedisPoolUtil.set("proxy." + springBaseConfig.getIp(),
+				"http://" + springBaseConfig.getIp() + ":" + tomcatPort + "/devicec/send");
 	}
 }

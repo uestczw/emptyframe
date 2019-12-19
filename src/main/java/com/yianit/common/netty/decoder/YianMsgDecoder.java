@@ -38,8 +38,10 @@ public class YianMsgDecoder extends ByteToMessageDecoder {
 		// int port = ipSocket.getPort();
 		// LOG.info("我的端口号:" + port);
 		// coder.decode(ctx,in);
-		coder.initDeviceCache(null, ctx.channel());
-		out.addAll(coder.decode(ctx, in));
+		List<String> tmp = coder.decode(ctx, in);
+		if(tmp!=null){
+			out.addAll(tmp);
+		}
 	}
 
 	public void updateCoder(YianCoder coder) {

@@ -43,7 +43,7 @@ public class BootNettyChannelInboundHandlerAdapter extends ChannelInboundHandler
         rules.add(rule);
         SendTask task = new SendTask(rules,msg.toString());
         sendThreadPool.execute(task);
-        ctx.writeAndFlush(msg);
+        //ctx.writeAndFlush(msg);
     	//ctx.fireChannelRead(msg);
     }
  
@@ -56,7 +56,7 @@ public class BootNettyChannelInboundHandlerAdapter extends ChannelInboundHandler
     public void channelReadComplete(ChannelHandlerContext ctx) throws IOException
     {
     	//System.out.println("channelReadComplete");
-    	ctx.flush();
+    	//ctx.flush();
     }
  
     /**

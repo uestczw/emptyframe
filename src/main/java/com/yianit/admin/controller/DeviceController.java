@@ -12,12 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.yianit.common.AjaxJsonResponseWraper;
 import com.yianit.common.netty.DeviceCache;
 import com.yianit.common.util.HttpClientUtil;
 import com.yianit.common.util.JedisPoolUtil;
+import com.yianit.config.SpringBaseConfig;
 import com.yianit.exception.LogisHandleException;
 import com.yianit.exception.LogisServiceException;
 
@@ -27,53 +30,75 @@ import hl.king.utils.StringUtil;
 import io.netty.channel.Channel;
 
 @RestController
-@RequestMapping("/device")
+@RequestMapping("/devicec")
 public class DeviceController extends BaseController {
 	@Autowired
 	@Qualifier("jedisPoolUtil")
 	private JedisPoolUtil jedisPoolUtil;
-
+	@Autowired
+	private SpringBaseConfig springBaseConfig;
+	@ResponseBody
 	@RequestMapping("/send")
-	public String send(HttpSession session, HttpServletRequest req, HttpServletResponse response, Model model,
-			@Param("") String deviceId) throws LogisHandleException {
-		Map<String, Object> ret = null;
+	public Map<String, Object> send(HttpSession session, HttpServletRequest req, HttpServletResponse response,
+			Model model, @Param("") String deviceId, @Param("") String msg) throws LogisHandleException {
+		Map<String, Object> ret = new HashMap<String, Object>();
 		if (!DeviceCache.DEVICE_CHANNEL_CACHE.containsKey(deviceId)) {
-			String rd = jedisPoolUtil.get("clientcache_" + deviceId);
+			String rd = jedisPoolUtil.get("clientcache." + deviceId);
 			if (StringUtil.isEmpty(rd)) {
-				return "1";// 设备未连接服务器
+				ret.put("code", 1);
+				ret.put("msg", "设备未连接服务器");
+				return ret;
 			} else {
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("deviceId", deviceId);
-				String path = jedisPoolUtil.get("proxy_" + rd);
+				if(rd.equals(springBaseConfig.getIp())){
+					sendMsgToDevice(deviceId,msg,ret);
+					return ret;
+				}
+				String path = jedisPoolUtil.get("proxy." + rd);
 				LOG.info("设备未连接本地，开始转发到" + path);
 				if (StringUtil.isEmpty(path)) {
-					return "3";// 设备对应服务器已停机
+					ret.put("code", 3);
+					ret.put("msg", "设备对应服务器已停机");
+					return ret;//
 				}
 				try {
-					return HttpClientUtil.sendHttpClientPost(path, params, "UTF-8");
+					Map<String, String> params = new HashMap<String, String>();
+					params.put("deviceId", deviceId);
+					params.put("msg", msg);
+					String retStr = HttpClientUtil.sendHttpClientPost(path, params, "UTF-8");
+					ret = JSON.parseObject(retStr, Map.class);
+					ret.put("path", path);
+					return ret;
 				} catch (LogisServiceException e) {
 					LOG.error("设备调用转发到" + path + "失败", e);
-					return "4";// 服务器转发失败
+					ret.put("code", 4);
+					ret.put("msg", "服务器转发失败");
+					return ret;
 				}
 			}
 		} else {
 			LOG.info("设备连接本地，开始调用");
-			Channel cnannel = DeviceCache.DEVICE_CHANNEL_CACHE.get(deviceId);
-			if (cnannel != null && cnannel.isOpen() && cnannel.isActive()) {
-				cnannel.writeAndFlush("您被调用");
-				return "0";// 成功
-			} else {
-				return "2";// 设备已掉线
-			}
+			sendMsgToDevice(deviceId,msg,ret);
+			return ret;
+		}
+	}
+	private void sendMsgToDevice(String deviceId,String msg,Map<String, Object> ret){
+		Channel cnannel = DeviceCache.DEVICE_CHANNEL_CACHE.get(deviceId);
+		if (cnannel != null && cnannel.isOpen() && cnannel.isActive()) {
+			cnannel.writeAndFlush(msg);
+			ret.put("code", 0);
+			ret.put("msg", "成功");
+		} else {
+			ret.put("code", 2);
+			ret.put("msg", "设备已掉线");
 		}
 	}
 
 	@RequestMapping("/list")
 	public Map<String, Object> list(HttpSession session, HttpServletRequest req, HttpServletResponse response,
 			Model model, @Param("") String deviceId) throws LogisHandleException {
-		// List<String> l = jedisPoolUtil.gets("clientcache_*");
-		List<String> l = jedisPoolUtil.keys("clientcache_*");
-		List<String> ls = jedisPoolUtil.gets("proxy_*");
+		// List<String> l = jedisPoolUtil.gets("clientcache.*");
+		List<String> l = jedisPoolUtil.keys("clientcache.*");
+		List<String> ls = jedisPoolUtil.gets("proxy.*");
 		// for(String s:l){
 		// jedisPoolUtil.removeKey(s);
 		// }

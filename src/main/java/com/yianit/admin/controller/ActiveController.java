@@ -6,15 +6,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.fastjson.JSON;
 import com.yianit.common.AjaxJsonResponseWraper;
 import com.yianit.common.netty.ChannelContext;
 import com.yianit.common.netty.NettyServer;
@@ -32,14 +33,13 @@ import com.yianit.common.netty.YianBenCache;
 import com.yianit.common.netty.coder.YianCoder;
 import com.yianit.common.netty.decoder.YianMsgDecoder;
 import com.yianit.common.netty.encoder.YianMsgEncoder;
-import com.yianit.common.threadpools.SendThreadPool;
 import com.yianit.common.util.YianFileUtil;
+import com.yianit.config.SendThreadConfig;
 import com.yianit.exception.LogisHandleException;
 import com.yianit.exception.LogisServiceException;
 
 import hl.king.common.RegisterBean;
 import hl.king.mybatis.spring.common.controller.BaseController;
-import io.netty.channel.ChannelPipeline;
 
 @Controller("activeController")
 public class ActiveController extends BaseController {
@@ -47,7 +47,12 @@ public class ActiveController extends BaseController {
 	private RegisterBean registerBean;
 	@Autowired
 	private NettyServer nettyServer;
-
+	@Autowired
+	@Qualifier("sendThreadService")
+	ThreadPoolExecutor sendThreadService;
+	@Autowired
+	@Qualifier("yianConnectionFactory")
+	ConnectionFactory connectionFactory;
 	@RequestMapping("/admin/active/add.do")
 	public String add(@RequestParam("wj") MultipartFile[] files, HttpSession session, HttpServletRequest request,
 			HttpServletResponse response, Model model) throws LogisServiceException {
@@ -140,19 +145,12 @@ public class ActiveController extends BaseController {
 		}
 		return "admin/user.html";
 	}
-	@ResponseBody
-	@RequestMapping("/stop")
-    public Map<String, Object> stop(HttpSession session, HttpServletRequest req, HttpServletResponse response, Model model)
-            throws LogisHandleException {
-		nettyServer.stopServerChannel(7997);
-		Map<String, Object> ret = AjaxJsonResponseWraper.createSuccessResponseWithData("ssss");
-        return ret;
-    }
+	
 	@ResponseBody
 	@RequestMapping("/rabbit")
     public Map<String, Object> rabbit(HttpSession session, HttpServletRequest req, HttpServletResponse response, Model model)
             throws LogisHandleException {
-		String s = "netty:"+NettyServer.QUEUE.size()+",rabbit:"+SendThreadPool.QUEUE.size();
+		String s = "rabbit:"+SendThreadConfig.QUEUE.size();
 		Map<String, Object> ret = AjaxJsonResponseWraper.createSuccessResponseWithData(s);
         return ret;
     }
@@ -162,8 +160,11 @@ public class ActiveController extends BaseController {
     public Map<String, Object> thread(HttpSession session, HttpServletRequest req, HttpServletResponse response, Model model)
             throws LogisHandleException {
 		String size = req.getParameter("size");
-		SendThreadPool.SERVICE.setCorePoolSize(Integer.parseInt(size));
-		SendThreadPool.SERVICE.setMaximumPoolSize(Integer.parseInt(size));
+		int sizeInt = Integer.parseInt(size);
+		((CachingConnectionFactory)connectionFactory).setConnectionLimit(sizeInt);
+		((CachingConnectionFactory)connectionFactory).setConnectionCacheSize(sizeInt);
+		sendThreadService.setCorePoolSize(sizeInt);
+		sendThreadService.setMaximumPoolSize(sizeInt);
 		Map<String, Object> ret = AjaxJsonResponseWraper.createSuccessResponseWithData("OK");
         return ret;
     }

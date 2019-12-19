@@ -1,48 +1,26 @@
 package com.yianit.common.threadpools;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.yianit.common.netty.AbsSendTask;
 import com.yianit.common.util.JedisPoolUtil;
+import com.yianit.config.SendThreadConfig;
 
-@Component
+//@Component
 public class SendThreadPool {
-	@Autowired
-	AmqpTemplate rabbitTemplate;
-	@Autowired
+	public SendThreadPool(RabbitTemplate amqpTemplate,JedisPoolUtil jedisPoolUtil,ThreadPoolExecutor SERVICE){
+		this.rabbitTemplate = amqpTemplate;
+		this.jedisPoolUtil = jedisPoolUtil;
+		this.SERVICE = SERVICE;
+	}
+	RabbitTemplate rabbitTemplate;
 	JedisPoolUtil jedisPoolUtil;
 	private static final Logger LOGGER = LoggerFactory.getLogger(SendThreadPool.class);
-	private static final int CORE_POOL_SIZE = 4;
-	private static final int MAXIMUM_POOL_SIZE = 4;
-	private static final long KEEP_ALIVE_TIME = 10;
-	public static final BlockingQueue<Runnable> QUEUE = new LinkedBlockingQueue<Runnable>();
-	public static final ThreadPoolExecutor SERVICE = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE,
-			KEEP_ALIVE_TIME, TimeUnit.MINUTES, QUEUE,
-			new ThreadFactoryBuilder().setDaemon(true).setNameFormat("GP-THREAD-POOL-%d").build()) {
-		@Override
-		protected void afterExecute(Runnable r, Throwable t) {
-			super.afterExecute(r, t);
-//			if (r instanceof AbsSendTask) {
-//				try {
-//					QUEUE.put((AbsSendTask) r);
-//				} catch (InterruptedException e) {
-//					LOGGER.error("SendTask put:{}", e);
-//				}
-//				LOGGER.debug("SendTask put:{}", r);
-//			}
-		}
-	};
+	public static ThreadPoolExecutor SERVICE = null;
 
 	/**
 	 * 执行任务
@@ -68,7 +46,7 @@ public class SendThreadPool {
 			});
         }
         while(true){
-        	System.out.println(QUEUE.size());
+        	System.out.println(SendThreadConfig.QUEUE.size());
         	try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {

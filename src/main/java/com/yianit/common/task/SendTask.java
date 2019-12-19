@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+
 import com.yianit.common.netty.AbsSendTask;
 import com.yianit.common.netty.SendRule;
 
@@ -32,7 +34,7 @@ public class SendTask extends AbsSendTask {
 					manMap.put("messageData", content);
 					manMap.put("createTime", createTime);
 					//jedisPoolUtil.set("hhhhh", content);
-					 rabbitTemplate.convertAndSend(rule.getMqExchange(), rule.getMqKey(), manMap);
+					rabbitTemplate.convertAndSend(rule.getMqExchange(), rule.getMqKey(), manMap);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

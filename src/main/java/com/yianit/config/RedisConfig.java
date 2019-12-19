@@ -9,6 +9,8 @@ import redis.clients.jedis.JedisPoolConfig;
 import tk.mybatis.mapper.util.StringUtil;
 @Configuration
 public class RedisConfig {
+	@Value("${spring.redis.prefex}")
+	private String	prefex;
 	@Value("${spring.redis.database}")
 	private String	database;
 	@Value("${spring.redis.host}")
@@ -48,5 +50,8 @@ public class RedisConfig {
         }else {
         	return new JedisPool(config, host, port, 10000,password);
         }
+	}
+	public String getPrefex(){
+		return prefex;
 	}
 }

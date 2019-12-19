@@ -11,7 +11,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class TopicRabbitConfig {
     //绑定键
     public final static String man = "yianiot.man";
@@ -47,7 +47,7 @@ public class TopicRabbitConfig {
 //        return BindingBuilder.bind(secondQueue()).to(exchange()).with("yianiot.#");
 //    }
     
-    @Bean
+    //@Bean
     public RabbitTemplate createRabbitTemplate(ConnectionFactory connectionFactory){
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
         rabbitTemplate.setConnectionFactory(connectionFactory);

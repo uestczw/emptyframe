@@ -9,7 +9,7 @@ import hl.king.mybatis.spring.common.controller.BaseController;
 public class HealthController extends BaseController{
 	@RequestMapping("/health")
 	public int health(){
-		LOG.info("consul健康检查");
+		LOG.debug("consul健康检查");
 		return HttpStatus.SC_OK;
 	}
 }
