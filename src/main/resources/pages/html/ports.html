@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Pragma" content="Pragma" />
+<meta http-equiv="Cache-Control" content="public" />
+<title>消息网关 | 平台信息</title>
+
+<link href="/static/inspinia/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/inspinia/font-awesome/css/font-awesome.css"
+	rel="stylesheet">
+
+<!-- FooTable -->
+<link href="/static/inspinia/css/plugins/footable/footable.core.css"
+	rel="stylesheet">
+
+<link href="/static/inspinia/css/animate.css" rel="stylesheet">
+<link href="/static/inspinia/css/style.css" rel="stylesheet">
+<!-- Mainly scripts -->
+<script src="/static/inspinia/js/jquery-3.1.1.min.js"></script>
+<script src="/static/inspinia/js/bootstrap.min.js"></script>
+<script src="/static/inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script
+	src="/static/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- FooTable -->
+<script src="/static/inspinia/js/plugins/footable/footable.all.min.js"></script>
+
+<script src="/static/inspinia/js/plugins/pace/pace.min.js"></script>
+<script src="/static/js/commons.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/static/easyui-1.6.2/themes/metro/easyui.css" />
+<script src="/static/easyui-1.6.2/jquery.easyui.min.js"
+	type="text/javascript"></script>
+<script src="/static/highcharts/code/highcharts.js"></script>
+<script src="/static/highcharts/code/highcharts-3d.js"></script>
+<script src="/static/highcharts/code/modules/exporting.js"></script>
+<script src="/static/highcharts/highcharts-zh_CN.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/static/easyui-1.6.2/themes/metro/easyui.css" />
+<script src="/static/easyui-1.6.2/jquery.easyui.min.js"></script>
+</head>
+
+<body>
+
+	<div id="wrapper">
+
+		<nav class="navbar-default navbar-static-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav metismenu" id="side-menu">
+					<li class="nav-header">
+						<div class="dropdown profile-element">
+							<span> <img alt="image" class="img-circle"
+								src="/static/inspinia/img/profile_small.jpg" />
+							</span> <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<span class="clear"> <span class="block m-t-xs"> <strong
+										class="font-bold" th:text="${ user}"></strong>
+								</span> <!--<span class="text-muted text-xs block">软件工程师 <b
+										class="caret"></b></span>-->
+							</span>
+							</a>
+							<ul class="dropdown-menu animated fadeInRight m-t-xs">
+								<!--  <li><a href="profile.html">个人主页</a></li>
+								<li><a href="contacts.html">联系我们</a></li>
+								<li><a href="mailbox.html">邮箱</a></li>
+								<li class="divider"></li>-->
+								<li><a href="login.html">注销</a></li>
+							</ul>
+						</div>
+						<div class="logo-element">HYB</div>
+					</li>
+					<li class="active"><a href="/main"><i
+							class="fa fa-gear"></i> <span class="nav-label">主页</span></a>
+					</li>
+					<li class="active"><a href="/port"><i
+							class="fa fa-gear"></i> <span class="nav-label">端口管理</span></a>
+					</li>
+					<li class="active"><a href="/device"><i
+							class="fa fa-gear"></i> <span class="nav-label">设备查看</span></a>
+					</li>
+					<li class="active"><a href="/controllDevice"><i
+							class="fa fa-gear"></i> <span class="nav-label">控制设备</span></a>
+					</li>
+					<li class=""><a href="#"><i
+							class="fa fa-gear"></i> <span class="nav-label">测试二级</span>
+							<span class="fa arrow"></span></a>
+						<ul class="nav nav-second-level collapse">
+						    <li class="active"><a href="">测试</a></li>
+						</ul>
+					</li>
+				</ul>
+
+			</div>
+		</nav>
+
+		<div id="page-wrapper" class="gray-bg">
+			<div class="row border-bottom">
+				<nav class="navbar navbar-static-top" role="navigation"
+					style="margin-bottom: 0">
+					<div class="navbar-header">
+						<a class="navbar-minimalize minimalize-styl-2 btn btn-primary "
+							href="#"><i class="fa fa-bars"></i> </a>
+						<form role="search" class="navbar-form-custom"
+							action="search_results.html">
+							<div class="form-group">
+								<input type="text" placeholder="Search for something..."
+									class="form-control" name="top-search" id="top-search">
+							</div>
+						</form>
+					</div>
+					<ul class="nav navbar-top-links navbar-right">
+						<li><span class="m-r-sm text-muted welcome-message">欢迎使用消息网关后台管理系统.</span></li>
+						<li class="dropdown"><a class="dropdown-toggle count-info"
+							data-toggle="dropdown" href="#"> <i class="fa fa-envelope"></i>
+								<span class="label label-warning">0</span>
+						</a>
+							<ul class="dropdown-menu dropdown-messages">
+							</ul></li>
+						<li class="dropdown"><a class="dropdown-toggle count-info"
+							data-toggle="dropdown" href="#"> <i class="fa fa-bell"></i> <span
+								class="label label-primary">0</span>
+						</a>
+							<ul class="dropdown-menu dropdown-alerts">	
+							</ul></li>
+						<li><a href="${cpx }/loginOut.do"> <i class="fa fa-sign-out"></i>
+								注销
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="row wrapper border-bottom white-bg page-heading">
+				<div class="col-lg-10">
+					<h2>平台信息</h2>
+					<ol class="breadcrumb">
+						<li><a href="${cpx }/ptadmin/gzzm.do">Home</a></li>
+						<li class="active"><strong>平台信息</strong></li>
+					</ol>
+				</div>
+				<div class="col-lg-2"></div>
+			</div>
+			<div class="wrapper wrapper-content">
+			    <div class="row">
+			        <div class="col-lg-12">
+			            <input type="button" onclick="add();" class="btn btn-info"
+												value="添加端口"></input>
+			        </div>
+			    </div>
+				<div class="row">
+					<div class="col-lg-12">
+						<table style="width: 100%; height: 430px"
+											data-options="
+                                    pagination:true,
+                                    fitColumns:false,
+                                    iconCls:'icon-save',
+                                    collapsible: true,
+                                    singleSelect: true,
+                                    url: '',
+                                    idField: 'ID',
+                                    queryParams:{},
+                                    loadMsg:'数据装载中......',
+                                    rownumbers: true,
+                                    method: 'get'"
+											id="grid">
+											<thead>
+												<tr>
+													<th data-options="field:'port',width:200">端口号</th>
+													<th data-options="field:'coderName',width:400" >编解码类</th>
+													<th data-options="field:'coderVer',width:160">编解码版本</th>
+													<th data-options="field:'channels',width:160">连接数量</th>
+													<th data-options="field:'cz',width:160" formatter="formatcz">操作</th>
+												</tr>
+											</thead>
+										</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Flot -->
+		<script src="/static/inspinia/js/plugins/flot/jquery.flot.js"></script>
+		<script
+			src="/static/inspinia/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+		<script src="/static/inspinia/js/plugins/flot/jquery.flot.spline.js"></script>
+		<script src="/static/inspinia/js/plugins/flot/jquery.flot.resize.js"></script>
+		<script src="/static/inspinia/js/plugins/flot/jquery.flot.pie.js"></script>
+		<script src="/static/inspinia/js/plugins/flot/jquery.flot.symbol.js"></script>
+		<script src="/static/inspinia/js/plugins/flot/jquery.flot.time.js"></script>
+</body>
+
+</html>
+<script>
+    $(document).ready(function(){
+    	$('#side-menu').metisMenu();
+    	var p = $('#grid').datagrid().datagrid('getPager');
+		p.pagination({
+			pageSize : 10,//每页显示的记录条数，默认为5  
+			pageList : [ 5, 10 ],//可以设置每页记录条数的列表  
+			beforePageText : '第',//页数文本框前显示的汉字  
+			afterPageText : '页    共 {pages} 页',
+			displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+		});
+		var url = "[[${ctx}]]/port/list";
+		util.ajax($('body'), {}, function(data) {
+			$('#grid ').datagrid({ loadFilter: pagerFilter }).datagrid('loadData', data);
+		},url);
+    });
+    function formatcz(val, row){
+    	return '<a onclick="update(\''+row.port+'\')" href="javascript:void(0);">修改</a>|<a onclick="del(\''+row.port+'\')" href="javascript:void(0);">删除</a>';
+    }
+    function del(port){
+    	var url = "[[${ctx}]]/port/stop";
+		util.ajax($('body'), {port:port}, function(data) {
+			alert('停止成功');
+			window.location = window.location;
+		},url);
+    }
+    function update(port){
+    	window.location='/port/add?port='+port;
+    }
+    function add(){
+    	window.location='/port/add';
+    }
+  //计算分页
+    function pagerFilter(data) {
+    if (typeof data.length == 'number' && typeof data.splice == 'function') {
+    data = {
+    total: data.length,
+    rows: data
+    }
+    }
+    var dg = $(this);
+    var opts = dg.datagrid('options');
+    var pager = dg.datagrid('getPager');
+    pager.pagination({
+    onSelectPage: function (pageNum, pageSize) {
+    opts.pageNumber = pageNum;
+    opts.pageSize = pageSize;
+    pager.pagination('refresh', {
+    pageNumber: pageNum,
+    pageSize: pageSize
+    });
+    dg.datagrid('loadData', data);
+    }
+    });
+    if (!data.originalRows) {
+    data.originalRows = (data.rows);
+    }
+    var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
+    var end = start + parseInt(opts.pageSize);
+    data.rows = (data.originalRows.slice(start, end));
+    return data;
+    }
+</script>
