@@ -1,5 +1,6 @@
 package com.yianit.admin.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +11,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.yianit.common.AjaxJsonResponseWraper;
@@ -29,8 +30,7 @@ import hl.king.mybatis.spring.common.controller.BaseController;
 import hl.king.utils.StringUtil;
 import io.netty.channel.Channel;
 
-@RestController
-@RequestMapping("/devicec")
+@Controller
 public class DeviceController extends BaseController {
 	@Autowired
 	@Qualifier("jedisPoolUtil")
@@ -38,7 +38,7 @@ public class DeviceController extends BaseController {
 	@Autowired
 	private SpringBaseConfig springBaseConfig;
 	@ResponseBody
-	@RequestMapping("/send")
+	@RequestMapping("/devicec/send")
 	public Map<String, Object> send(HttpSession session, HttpServletRequest req, HttpServletResponse response,
 			Model model, @Param("") String deviceId, @Param("") String msg) throws LogisHandleException {
 		Map<String, Object> ret = new HashMap<String, Object>();
@@ -93,17 +93,31 @@ public class DeviceController extends BaseController {
 		}
 	}
 
-	@RequestMapping("/list")
-	public Map<String, Object> list(HttpSession session, HttpServletRequest req, HttpServletResponse response,
-			Model model, @Param("") String deviceId) throws LogisHandleException {
-		// List<String> l = jedisPoolUtil.gets("clientcache.*");
-		List<String> l = jedisPoolUtil.keys("clientcache.*");
-		List<String> ls = jedisPoolUtil.gets("proxy.*");
-		// for(String s:l){
-		// jedisPoolUtil.removeKey(s);
-		// }
-		l.addAll(ls);
-		Map<String, Object> ret = AjaxJsonResponseWraper.createSuccessResponseWithData(l);
-		return ret;
-	}
+	@RequestMapping("/device")
+    public String device(HttpSession session, HttpServletRequest req, HttpServletResponse response, Model model)
+            throws LogisHandleException {
+		return "html/device.html";
+    }
+	@ResponseBody
+    @RequestMapping("/device/list")
+    public Map<String, Object> devicelist(HttpSession session, HttpServletRequest req, HttpServletResponse response, Model model)
+            throws LogisHandleException {
+		List<String> devices = jedisPoolUtil.keys("clientcache.*");
+		List<Map<String,Object>> data = new ArrayList<Map<String,Object>>();
+		for(String s:devices){
+			String deviceId = s.substring(s.lastIndexOf(".")+1);
+			String server = jedisPoolUtil.get(s);
+			Map<String,Object> m = new HashMap<String,Object>();
+			m.put("deviceId", deviceId);
+			m.put("server", server);
+			data.add(m);
+		}
+    	Map<String, Object> ret = AjaxJsonResponseWraper.createSuccessResponseWithData(data);
+        return ret;
+    }
+	@RequestMapping("/controllDevice")
+    public String controllDevice(HttpSession session, HttpServletRequest req, HttpServletResponse response, Model model)
+            throws LogisHandleException {
+		return "html/controllDevice.html";
+    }
 }

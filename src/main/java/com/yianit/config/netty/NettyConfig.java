@@ -1,4 +1,4 @@
-package com.yianit.config;
+package com.yianit.config.netty;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;

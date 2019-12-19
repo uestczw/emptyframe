@@ -8,7 +8,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import com.yianit.common.netty.AbsSendTask;
 import com.yianit.common.util.JedisPoolUtil;
-import com.yianit.config.SendThreadConfig;
+import com.yianit.config.distribute.SendThreadConfig;
 
 //@Component
 public class SendThreadPool {

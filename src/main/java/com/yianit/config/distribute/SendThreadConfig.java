@@ -1,4 +1,4 @@
-package com.yianit.config;
+package com.yianit.config.distribute;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

@@ -1,4 +1,4 @@
-package com.yianit.config;
+package com.yianit.config.rabbit;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
